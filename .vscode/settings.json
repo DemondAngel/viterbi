@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "operations_vectors.h": "c",
+        "stdio.h": "c"
+    }
+}
