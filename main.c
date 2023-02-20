@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "operations_vectors.h"
-#include "operations_vectors.c"
 #include "trellis.h"
 #include "trellis.c"
 
 int main(){
     
-    
+    Salida ** trellis;
 
     /*
     int *** tp;
@@ -25,5 +23,11 @@ int main(){
     printf("\nValores del puntero: %i\n", tp[0][0][0]);
     printf("\nValores del puntero: %i\n", tp[0][1][0]);
     */
+   trellis = generarTrellis();
+    int i = 0;
+    for(i = 0; i< 2; i++)
+    printf("\n%i\n", trellis[0][1].sal->v[i]);
+   
+
     return 0;
 }

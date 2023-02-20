@@ -1,12 +1,13 @@
 #ifndef _TRELLIS
 #define _TRELLIS
-
+#include "operations_vectors.h"
+#include "operations_vectors.c"
 typedef struct{
-    int * sal;
-    int * edoSig;
+    Info_Vector * sal;
+    Info_Vector * edoSig;
 } Salida;
 
-Salida * generarTrellis();
+Salida ** generarTrellis();
 
 
 #include "trellis.h"
