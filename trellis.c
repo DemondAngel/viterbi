@@ -1,12 +1,10 @@
 
 #include "trellis.h"
-
-Salida *** generarTrellis(){
-
-    char * cadena = (char * ) calloc(2,sizeof(int));
+int sal = 0;
+Trellis * generarTrellis(){
 
     char * alfabet = (char* ) malloc(sizeof(char));
-    int sal = 0;
+    
     int en = 0;
     int i = 0;
     int k = 0;
@@ -48,17 +46,17 @@ Salida *** generarTrellis(){
     Salida *** trellis = (Salida ***) calloc(en, sizeof(Salida **));
 
     for(k = 0; k < en; k++){
-        trellis[k] = (Salida ** ) calloc(states,sizeof(Salida *)) ;
+        trellis[k] = (Salida ** ) calloc(en,sizeof(Salida *)) ;
         //Cambiar por estado
         for(i = 0; i < states; i++){
-            int * salV = (int * ) calloc(sal, sizeof(int));
+            
             int j = 0;
             Info_Vector * vS = NULL;
-        //printf("\nEstado %i\n", i);
+        printf("\nEstado %i\n", i);
             trellis[k][i] = (Salida *) calloc(vAlfabet->len,sizeof(Salida));
             for(j = 0; j < vAlfabet->len; j++){ //Cambiar por entradas
-                
-                //printf("\nDato %i\n", vAlfabet->v[j]);
+                int * salV = (int * ) calloc(sal, sizeof(int));
+                printf("\nDato %i\n", vAlfabet->v[j]);
                 int data = vAlfabet->v[j];
                 char * vsC = (char*) calloc(states-1, sizeof(char));
                 Info_Vector * oneVector = (Info_Vector * ) malloc(sizeof(Info_Vector));
@@ -77,6 +75,7 @@ Salida *** generarTrellis(){
                         vS->len = stateAux;
                     }
                     else{
+                        free(vS->v);
                         int * nV = (int*) calloc(stateAux, sizeof(int));
                         nV[stateAux-aux-1] = vS->v[aux];
                         fillDataRange(nV,0,stateAux-aux-1, 0);
@@ -118,14 +117,15 @@ Salida *** generarTrellis(){
                 }
                 insertInit(vS,data);
 
-                //printVector(vS->v, vS->len, "Estado siguiente");
+                printVector(vS->v, vS->len, "Estado siguiente");
                 trellis[k][i][j].edoSig = vS;
-                //printVector(salV, sal, "Salida");
+                printVector(salV, sal, "Salida");
                 Info_Vector * salVI = (Info_Vector * ) malloc(sizeof(Info_Vector));
                 salVI->len = sal;
                 salVI->v = salV;
                 trellis[k][i][j].sal = salVI;
-                //printf("\n-----------------------------------------------------------------\n");
+                trellis[k][i][j].sal->len = sal;
+                printf("\n-----------------------------------------------------------------\n");
             }
 
             
@@ -133,13 +133,14 @@ Salida *** generarTrellis(){
         }
     }
 
-    for(k = 0; k < en; k++){
-        printf("\nTrellis: %i\n", k);
-        imprimeTrellis(trellis[k], states,vAlfabet->len);
-    }
-        
+    Trellis * trellisInfo = (Trellis *) malloc(sizeof(Trellis));
+
+    trellisInfo->info = trellis;
+    trellisInfo->estados = states;
+    trellisInfo->entradas = vAlfabet->len;
+    trellisInfo->len = en;
     
-    return trellis;
+    return trellisInfo;
 }
 
 void imprimeTrellis(Salida ** trellis, int estados, int alfabeto){
@@ -150,11 +151,61 @@ void imprimeTrellis(Salida ** trellis, int estados, int alfabeto){
         printf("\nEstado %i\n", i);
         for(j = 0; j < alfabeto; j++){
             printf("\nEntrada %i\n", j);
-
-            printVector(trellis[i][j].sal->v, trellis[i][j].sal->len, "Salida");
             printVector(trellis[i][j].edoSig->v, trellis[i][j].edoSig->len, "Estado siguiente");
+            printVector(trellis[i][j].sal->v, trellis[i][j].sal->len, "Salida");
+            
 
         }
     }
 
+}
+
+Trellis * combinaTrellis(Trellis * trellis){
+    int i = 0;
+    int * counterStates = (int *)calloc(trellis->len, sizeof(int));
+    int counterS = 0;
+    int totalStates = pow(trellis->estados, trellis->len);
+    int * counterIn = (int *) calloc(trellis->len, sizeof(int));
+    int totalIn = pow(trellis->entradas, trellis->len);
+    int counterI = 0;
+
+    for(i = 0; i < trellis->len; i++){
+        counterStates[i] = 0;
+        counterIn[i] = 0;
+    }
+
+    for(counterI = 0; counterI < totalIn; counterI++){
+        printf("\nDato: ");
+        for(i = 0; i < trellis->len; i++) printf("%i", counterIn[i]);
+        printf("\n");
+
+        for(counterS = 0; counterS < totalStates; counterS++){
+            printf("\nEstados: ");
+            for(i = 0; i < trellis->len; i++) printf("%i", counterStates[i]);
+            printf("\n");
+            incrementaContador(counterStates, trellis->estados, trellis->len);
+        }
+
+        incrementaContador(counterIn, trellis->entradas, trellis->len);   
+    }
+
+    free(counterStates);
+    free(counterIn);  
+    
+    return NULL;
+}
+
+void incrementaContador(int * contador, int numMax, int len){
+    int i = 0;
+    for(i = 0; i < len; i++){
+            if(contador[i] < numMax){
+                contador[i]++;
+                if(contador[i] == numMax){
+                    contador[i] = 0;
+                }
+                else{
+                    break;
+                }      
+            }
+        }
 }

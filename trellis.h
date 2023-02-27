@@ -7,8 +7,17 @@ typedef struct{
     Info_Vector * edoSig;
 } Salida;
 
-Salida *** generarTrellis();
+typedef struct {
+    Salida *** info;
+    int estados;
+    int entradas;
+    int len;
+} Trellis;
+
+Trellis * generarTrellis();
 void imprimeTrellis(Salida ** trellis, int estados, int alfabeto);
+Trellis * combinaTrellis(Trellis * trellis);
+void incrementaContador(int * contador, int numMax, int len);
 
 #include "trellis.h"
 #endif

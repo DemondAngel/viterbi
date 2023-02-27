@@ -7,7 +7,7 @@
 
 int main(){
     
-    Salida *** trellis;
+    Trellis * trellis;
 
     /*
     int *** tp;
@@ -24,7 +24,14 @@ int main(){
     printf("\nValores del puntero: %i\n", tp[0][1][0]);
     */
    trellis = generarTrellis();
-   
+   int k = 0;
+    printf("\n------------------------------------------------------------------------------\n");
+    for(k = 0; k < trellis->len; k++){
+        printf("\nTrellis: %i\n", k);
+        imprimeTrellis(trellis->info[k], trellis->estados,trellis->entradas);
+    }
+    printf("\n------------------------------------------------------------------------------\n");
 
+    combinaTrellis(trellis); 
     return 0;
 }
