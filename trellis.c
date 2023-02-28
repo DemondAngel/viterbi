@@ -331,7 +331,7 @@ Trellis * combinaTrellis(Trellis * trellis){
             }
 
             t[0][counterS][counterI].edoSig = fusionaEstados(states, trellis->len, trellis->entradas);
-            t[0][counterS][counterI].sal = sumaSalidas(sals, trellis->len, pow(trellis->entradas, trellis->sals));
+            t[0][counterS][counterI].sal = sumaSalidas(sals, trellis->len, trellis->entradas);
             incrementaContador(counterIn, trellis->entradas, trellis->len);
             //free(states);
             //free(sals); 
@@ -409,16 +409,34 @@ int fusionaEstados(int * v, int len, int base){
 
 int sumaSalidas(int * v, int len,int base){
   //Convertir de entero a arreglo y hacer suma directa y reconvertir valor a decimal
+    char cadena[1000];
     int i = 0;
-    int value = 0;
-    for(i = 0; i < len; i++){
-        value += v[i];
-    }
+    int j = 0;
+    int * vR = (int *) calloc(0, sizeof(int));
+    int lenVR = 0;
+    printVector(v, len, "Vector con datos que entran");
+    for(i = 0; i< len; i++){
+        strcpy(cadena, "");
+        itoa(v[i], cadena, base);
+        int lenVector = strlen(cadena);
+        int * vAux = (int *) calloc(lenVector, sizeof(int));
+        for(j = 0; j < lenVector; j++){
+            vAux[j] = cadena[j] - '0';
+        }
+        
+        int * vRAux = add(vAux,lenVector, vR, lenVR, base);
+        printVector(vRAux, lenVector, "VRAux");
 
-    if(value > base-1){
-        value = value- (base-1);
-    }
+        if(lenVector > lenVR) lenVR = lenVector;
+        free(vAux);
+        free(vR);
+        vR = vRAux;
 
+
+    }
+    
+    int value = convierteVectorNum(vR, lenVR, 2);
+    free(vR);
     return value;
 
 }
