@@ -43,6 +43,11 @@ Info_Vector * cleanLeftZeros(int * v, int lenV){
     for(j = 0; j < newLen; j++, i++) newVector[j] = v[i];
 
     Info_Vector * infoVector = (Info_Vector * ) malloc(sizeof(Info_Vector));
+
+    if(infoVector == NULL){
+        printf("\nNo se reservó la memoria para InfoVector en cleanLeftZeros\n");
+    }
+
     infoVector->v = newVector;
     infoVector->len = newLen;
     return infoVector;
@@ -57,6 +62,12 @@ void printVector(int * v, int lenV, char * label){
 
 Info_Vector * joinVectors(Info_Vector * a, Info_Vector *b){
     Info_Vector * newVector = (Info_Vector *) malloc(sizeof(Info_Vector));
+
+    if(newVector == NULL){
+        printf("\nNo se reservo memoria para newVector en joinVectors\n");
+        exit(1);
+    }
+
     newVector->len = a->len + b ->len;
     newVector->v = (int *) calloc(newVector->len, sizeof(int));
     int i = 0, j = 0;
@@ -81,12 +92,27 @@ Info_Vector * parseInput(char * input, int cleanZerosLeft){
     int i = 0;
     int len = strlen(input);
     int * v = (int *) calloc(len, sizeof(int));
+
+    if(v == NULL){
+        printf("\nNo se reservo correctamente la memoria para el vector en parse Input\n");
+        exit(1);
+    }
+
     int beg = 0;
     for(i = 0; i < len; i++){
         v[i] = input[i] - '0';
     }
     Info_Vector * infoVector = (Info_Vector * ) malloc(sizeof(Info_Vector));
-     if(cleanZerosLeft == 1) infoVector = cleanLeftZeros(v, len);
+
+    if(infoVector == NULL){
+        printf("\nNo se reservo la memoria para infoVector en parseInput\n");
+        exit(1);
+    }
+
+     if(cleanZerosLeft == 1){
+        infoVector = cleanLeftZeros(v, len);
+        free(v);
+     }
     else{
         infoVector->v = v;
         infoVector->len = len;

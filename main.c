@@ -32,6 +32,12 @@ int main(){
     }
     printf("\n------------------------------------------------------------------------------\n");
 
-    combinaTrellis(trellis); 
+    trellis = combinaTrellis(trellis); 
+
+    printf("\n------------------------------------------------------------------------------\n");
+    printf("\nTrellis Nuevo");
+    imprimeTrellis(trellis->info[0], trellis->estados,trellis->entradas);
+    printf("\n------------------------------------------------------------------------------\n");
+
     return 0;
 }
