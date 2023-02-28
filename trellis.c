@@ -441,6 +441,14 @@ int sumaSalidas(int * v, int len,int base){
 
 }
 
-char * codifica(Trellis * trellis, int * sec){
-     v v
+char * codifica(Trellis * trellis, int * sec, int len){
+     int estado= 0;
+
+    int i = 0;
+    
+    for(i = 0; i < len; i++){
+        
+    }
+    
+
 }

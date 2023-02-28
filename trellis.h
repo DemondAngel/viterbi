@@ -22,7 +22,7 @@ void incrementaContador(int * contador, int numMax, int len);
 int convierteVectorNum(int * v, int len, int base);
 int fusionaEstados(int * v, int len, int base);
 int sumaSalidas(int * v, int len,int base);
-char * codifica(Trellis * trellis, int * sec);
+char * codifica(Trellis * trellis, int * sec, int len);
 
 #include "trellis.h"
 #endif
