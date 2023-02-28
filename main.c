@@ -9,20 +9,12 @@ int main(){
     
     Trellis * trellis;
 
-    /*
-    int *** tp;
+    char * secC = (char *) malloc(sizeof(char));
+    printf("\nIngresa la secuencia a codificar\n");
+    gets(secC);
 
-    tp = (int ***) malloc(sizeof(int**));
-    tp[0] = (int **) malloc(sizeof(int*));
-    tp[0][0] = (int *) malloc(sizeof(int));
-    tp[0][1] = (int *) malloc(sizeof(int));
+    int * sec = parseInput(secC, 0);
 
-    tp[0][0][0] = 5;
-    tp[0][1][0] = 10;
-
-    printf("\nValores del puntero: %i\n", tp[0][0][0]);
-    printf("\nValores del puntero: %i\n", tp[0][1][0]);
-    */
    trellis = generarTrellis();
    int k = 0;
     printf("\n------------------------------------------------------------------------------\n");
@@ -30,7 +22,7 @@ int main(){
         printf("\nTrellis: %i\n", k);
         imprimeTrellis(trellis->info[k], trellis->estados,trellis->entradas);
     }
-    printf("\n------------------------------------------------------------------------------\n");
+    printf("\n-----------5-------------------------------------------------------------------\n");
 
     trellis = combinaTrellis(trellis); 
 
@@ -38,6 +30,6 @@ int main(){
     printf("\nTrellis Nuevo");
     imprimeTrellis(trellis->info[0], trellis->estados,trellis->entradas);
     printf("\n------------------------------------------------------------------------------\n");
-
+    
     return 0;
 }

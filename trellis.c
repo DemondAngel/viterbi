@@ -440,3 +440,7 @@ int sumaSalidas(int * v, int len,int base){
     return value;
 
 }
+
+char * codifica(Trellis * trellis, int * sec){
+     v v
+}
