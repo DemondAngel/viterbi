@@ -347,6 +347,7 @@ Trellis * combinaTrellis(Trellis * trellis){
 
     nTrellis->entradas = totalIn;
     nTrellis->estados = totalStates;
+    nTrellis->sals = trellis->sals;
     nTrellis->len = 1;
     nTrellis->info = t;
 
@@ -442,13 +443,48 @@ int sumaSalidas(int * v, int len,int base){
 }
 
 char * codifica(Trellis * trellis, int * sec, int len){
-     int estado= 0;
-
+    int estado= 0;
+    char * secCod = (char *) calloc(0, sizeof(char));
     int i = 0;
     
-    for(i = 0; i < len; i++){
-        
+    while(i < len || estado != 0){
+        int bitEn = sec[i];
+        if(i >= len)
+            bitEn = 0;
+
+
+        int bitDec = trellis->info[0][estado][bitEn].sal;
+        estado = trellis->info[0][estado][bitEn].edoSig;
+
+        char bitBase[20000];
+        strcpy(bitBase, "");
+        itoa(bitDec, bitBase, trellis->entradas);
+
+        int lenBitBase = strlen(bitBase);
+        if(lenBitBase < trellis->sals){
+
+            char bitBaseAux[20000];
+            strcpy(bitBaseAux, "");
+            int newLen = trellis->sals - lenBitBase;
+            int j = 0;
+
+            for(j = 0; j < newLen; j++)
+                strcat(bitBaseAux, "0");
+            
+            strcat(bitBaseAux, bitBase);
+            strcpy(bitBase, bitBaseAux);
+            lenBitBase = newLen;
+
+        }
+
+        int lenSecCod = strlen(secCod);
+        char * secCodAux = secCod;
+        secCod = (char *) calloc(lenBitBase+lenSecCod, sizeof(char));
+        strcat(secCod, secCodAux);
+        strcat(secCod, bitBase);
+        free(secCodAux);
+        i++;
     }
     
-
+    return secCod;
 }

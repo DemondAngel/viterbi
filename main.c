@@ -13,7 +13,7 @@ int main(){
     printf("\nIngresa la secuencia a codificar\n");
     gets(secC);
 
-    int * sec = parseInput(secC, 0);
+    Info_Vector * sec = parseInput(secC, 0);
 
    trellis = generarTrellis();
    int k = 0;
@@ -30,6 +30,11 @@ int main(){
     printf("\nTrellis Nuevo");
     imprimeTrellis(trellis->info[0], trellis->estados,trellis->entradas);
     printf("\n------------------------------------------------------------------------------\n");
+    
+    char * secCod = codifica(trellis, sec->v, sec->len);
+    printf("Esta es la secuencia codificada: ");
+    puts(secCod);
+
     
     return 0;
 }
