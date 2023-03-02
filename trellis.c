@@ -442,10 +442,10 @@ int sumaSalidas(int * v, int len,int base){
 
 }
 
-char * codifica(Trellis * trellis, int * sec, int len){
+char * codifica(Trellis * trellis, int * sec, int len, int base){
     int estado= 0;
     char * secCod = (char *) calloc(0, sizeof(char));
-    int i = 0;
+    int i = 0; //Corregir entradas
     
     while(i < len || estado != 0){
         int bitEn = sec[i];
@@ -458,7 +458,7 @@ char * codifica(Trellis * trellis, int * sec, int len){
 
         char bitBase[20000];
         strcpy(bitBase, "");
-        itoa(bitDec, bitBase, trellis->entradas);
+        itoa(bitDec, bitBase, base);
 
         int lenBitBase = strlen(bitBase);
         if(lenBitBase < trellis->sals){
@@ -487,4 +487,59 @@ char * codifica(Trellis * trellis, int * sec, int len){
     }
     
     return secCod;
+}
+
+Info_Vector * parseaSecuencia(Info_Vector * v, int en, int base){
+    
+    int lenNewVector = ceil((float) v->len /en);
+    int i = 0,j=0, z = en-1;
+    int * newSec = (int *) calloc(lenNewVector, sizeof(int));
+    int * vAux = (int * ) calloc(en, sizeof(int));
+    int m = v->len%en;
+    if(m != 0){
+        int * vecAux = NULL;
+        int newLen = 0;
+        if(v->len < en){
+            vecAux = (int * ) calloc(en, sizeof(int));
+            fillDataRange(vecAux,v->len,en,0);
+            newLen = en;
+        }
+        else{
+            newLen = (en-m) + v->len;
+            vecAux = (int * ) calloc(newLen , sizeof(int));
+            fillDataRange(vecAux, v->len, newLen , 0);
+        }
+
+        for(i = 0; i < v->len; i++) vecAux[i] = v->v[i];
+
+        free(v->v);
+        v->len = newLen;
+        v->v = vecAux;
+
+    }
+
+    for(i = 0; i < v->len; i++){
+        vAux[z]= v->v[i];
+        printf("\nValor: %i\n", vAux[z]);
+        if((i+1)%en == 0){
+            int value = convierteVectorNum(vAux,en, base);
+            newSec[j] = value;
+            j++;
+            fillDataRange(vAux, 0, en, 0);
+            z = en-1;
+        }
+        else
+            z--;
+    }
+
+    free(vAux);
+    free(v->v);
+    free(v);
+
+    Info_Vector * infoVector = (Info_Vector *) malloc(sizeof(Info_Vector));
+
+    infoVector->v = newSec;
+    infoVector->len = lenNewVector;
+
+    return infoVector;
 }

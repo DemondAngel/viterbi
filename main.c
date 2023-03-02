@@ -8,7 +8,8 @@
 int main(){
     
     Trellis * trellis;
-
+    int en = 0;
+    int base = 0;
     char * secC = (char *) malloc(sizeof(char));
     printf("\nIngresa la secuencia a codificar\n");
     gets(secC);
@@ -16,6 +17,8 @@ int main(){
     Info_Vector * sec = parseInput(secC, 0);
 
    trellis = generarTrellis();
+   en = trellis->len;
+   base = trellis->entradas;
    int k = 0;
     printf("\n------------------------------------------------------------------------------\n");
     for(k = 0; k < trellis->len; k++){
@@ -31,7 +34,9 @@ int main(){
     imprimeTrellis(trellis->info[0], trellis->estados,trellis->entradas);
     printf("\n------------------------------------------------------------------------------\n");
     
-    char * secCod = codifica(trellis, sec->v, sec->len);
+    sec = parseaSecuencia(sec, en, base);
+
+    char * secCod = codifica(trellis, sec->v, sec->len, base);
     printf("Esta es la secuencia codificada: ");
     puts(secCod);
 
